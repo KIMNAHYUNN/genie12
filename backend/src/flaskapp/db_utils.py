@@ -38,7 +38,25 @@ def secure_query(base_query, var_tuple):
         return result
 
 def save_user_info(tarot_id, emotion_id):
-    user_query = "UPDATE IT_USER_MAS SET TAROT_ID=%s, EMOTION_ID=%s WHERE USER_ID='TEST0001'"
+    user_query = "UPDATE IT_USER_MAS A, " \
+                    "(SELECT 'TEST0001' AS USER_ID, "  \
+                        "F.TAROT_ID, T.TAROT_NM, F.EMOTION_ID, E.EMOTION_NM, F.FORTUNE_ID, F.INTENTION_CD, F.INTENTION_NM " \
+		            "FROM IT_FORTUNE_MAS F, IT_EMOTION_MAS E, IT_TAROT_MAS T " \
+		            "WHERE F.tarot_id = %s "\
+                        "AND F.emotion_id = ( CASE %s "\
+				            "WHEN '0'  THEN 'EM00' " \
+				            "WHEN '1'  THEN 'EM01' " \
+								    "END) " \
+		                "AND intention_cd = 0 " \
+		                "AND F.tarot_id = T.tarot_id " \
+		                "AND F.emotion_id = E.emotion_id) B " \
+                    "SET A.TAROT_ID = B.TAROT_ID, " \
+	                "A.TAROT_NM = B.TAROT_NM, " \
+                    "A.EMOTION_ID = B.EMOTION_ID, " \
+                    "A.EMOTION_NM = B.EMOTION_NM, " \
+                    "A.INTENTION_NM = B.INTENTION_NM, " \
+                    "A.FORTUNE_ID = B.FORTUNE_ID " \
+	                    "WHERE A.USER_ID = B.USER_ID"
     secure_query(user_query, (tarot_id, emotion_id))
 
 def save_fortune_id(fortune_id):
@@ -67,7 +85,7 @@ def get_tarot_info(tarot_id):
         'tarot_nm':tarot_nm,
         'image_data':get_image
     }
-    return tarot_info
+    return "success"
 
 
 

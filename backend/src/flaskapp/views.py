@@ -37,15 +37,16 @@ def route_review():
 def route_exit():
     return render_template('exit.html')
 
-@app.route('/tarot', methods=['GET'])
+@app.route('/tarot')
 def route_tarot():
-    data = request.headers
+    tarot_id = "TA02"
+    emotion_id = "EM02"
     try:
-        tarot_id = data.get("tarot_id")
-        emotion_id = data.get("emotion_id")
+        save_user_info(tarot_id, emotion_id)
     except:
-        return Response(status=500)
-    save_user_info(tarot_id, emotion_id)
+        return Response(status=409)
+    return "Success"
+
     # tarot_name = get_tarot_mas(tarot_id)
     #
     # return jsonify({
