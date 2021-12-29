@@ -1,0 +1,54 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100vh;
+    user-select: none;
+    -moz-user-select: none;
+    overflow : hidden;
+}
+a:link { color: red; text-decoration: none;}
+a:visited { color: black; text-decoration: none;}
+.background {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    background: url(../image/text.jpg);
+    background-repeat : no-repeat;
+    background-size : cover;
+}
+
+#pos {
+    position: absolute;
+    margin-left : 20px;
+    margin-top : 20px;
+    padding : 0;
+    border : 0;
+}
+
+#text-box {
+    position: absolute;
+    left:30%;
+    right:28%;
+    top:42%;
+    font-size: 6.5vw;
+    color: #000;
+    font-family: 'East Sea Dokdo', cursive;
+    font-weight: 500;
+}
+
+p.result1{
+    display: inline-block;
+    height:10px;
+    line-height: 90px;
+    box-sizing: border-box;
+    padding:0; margin:5px;
+}
+#next{
+    position: absolute;
+    left:70%;
+    top:70%;
+}
