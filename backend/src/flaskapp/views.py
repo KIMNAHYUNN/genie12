@@ -1,6 +1,7 @@
 from flask import request, g, Response, jsonify, render_template
 from flaskapp import app
 from flaskapp.db_utils import *
+import os
 
 @app.teardown_appcontext
 def close_db(e=None):
@@ -27,7 +28,27 @@ def route_card():
 
 @app.route('/result')
 def route_result():
-    return render_template('result.html')
+    tarot_id = "TA04"
+    emotion_id = "0"
+    intention_cd = "1"
+    try:
+        save_user_info(tarot_id, emotion_id, intention_cd)
+    except:
+        return Response(status=409)
+    try:
+        data = get_data()
+    except:
+        return Response(status=409)
+    fortune_desc = data['fortune_desc']
+    tarot_nm = data['tarot_nm']
+    file_name = "ta01.jpg"
+    file_path = os.path.join("../static/image/", file_name)
+    # return jsonify({
+    #     "fortune_desc" : fortune_desc,
+    #     "tarot_nm" : tarot_nm,
+    #     "file_name" : file_name
+    # })
+    return render_template('result.html', fortune_desc=fortune_desc, tarot_nm=tarot_nm, file_path=file_path)
 
 @app.route('/review')
 def route_review():
@@ -37,18 +58,3 @@ def route_review():
 def route_exit():
     return render_template('exit.html')
 
-@app.route('/tarot')
-def route_tarot():
-    tarot_id = "TA04"
-    emotion_id = "0"
-    try:
-        save_user_info(tarot_id, emotion_id)
-    except:
-        return Response(status=409)
-    return "Success"
-
-    # tarot_name = get_tarot_mas(tarot_id)
-    #
-    # return jsonify({
-    #     'tarot_name':tarot_name
-    # })

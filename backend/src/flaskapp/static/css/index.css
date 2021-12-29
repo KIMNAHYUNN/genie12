@@ -78,8 +78,8 @@ body.doorOpened #door {
   	border-radius: 0;
 	color: #b2876f;
   	margin-top:2rem;
-  	font-weight: bold;
-  	font-size: 1.578rem;
+    font-family: 'East Sea Dokdo', cursive;
+  	font-size: 2.578rem;
   	letter-spacing: 2px;
   	text-transform: uppercase;
   	text-decoration: none;

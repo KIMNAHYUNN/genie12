@@ -8,7 +8,8 @@ body {
     -moz-user-select: none;
     overflow : hidden;
 }
-
+a:link { color: red; text-decoration: none;}
+a:visited { color: black; text-decoration: none;}
 .background {
     position: absolute;
     left: 0;
@@ -20,22 +21,23 @@ body {
     background-size : cover;
 }
 
-#text {
-  font-size: 3.6vw;
-  color: #000;
-  font-family: Times, "Times New Roman", Georgia, serif;
-  font-weight: 1000;
+#pos {
+    position: absolute;
+    margin-left : 20px;
+    margin-top : 20px;
+    padding : 0;
+    border : 0;
 }
 
 #text-box {
     position: absolute;
+    font-family: 'East Sea Dokdo', cursive;
+    font-size: 5.6vw;
     left:28%;
     right:28%;
     top:38%;
-    font-size: 3.0vw;
     color: #000;
-    font-family: Times, "Times New Roman", Georgia, serif;
-    font-weight: 1000;
+    font-weight: 500;
 }
 
 p.result1, p.result2, p.result3, p.result4{

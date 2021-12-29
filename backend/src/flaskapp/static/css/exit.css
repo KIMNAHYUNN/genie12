@@ -49,15 +49,6 @@ body {
     pointer-events: none
 }
 
-
-.doorOpened #enter {
-    transform: translateX(0)
-}
-
-body.doorOpened #door {
-    transform: rotateY(-90deg)
-}
-*/
 #enter {
     position: absolute;
     /*background-image: url(../image/doorbg.jpg);
@@ -72,16 +63,23 @@ body.doorOpened #door {
     margin-top:-100px;
     z-index: -1
 }
-
+/*
+.doorOpened #enter {
+    transform: translateX(0)
+}
+*/
+body.doorOpened #door {
+    transform: rotateY(-90deg)
+}
 
 .button{
 	display: inline-block;
-  	padding: 0.5em 1em;
+  	padding: 0.2em 0.8em;
   	border-radius: 0;
 	color: #b2876f;
   	margin-top:2rem;
-  	font-weight: bold;
-  	font-size: 1.578rem;
+    font-family: 'East Sea Dokdo', cursive;
+  	font-size: 2.578rem;
   	letter-spacing: 2px;
   	text-transform: uppercase;
   	text-decoration: none;

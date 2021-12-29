@@ -5,19 +5,29 @@
     <meta charset="utf-8">
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <link rel="stylesheet" href="../static/css/start.css">
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <section class="background">
-        <a href="javascript:history.back()">뒤로가기</a>
-        <a href={{url_for('route_main')}}>다시하기</a>
+        <div id="pos">
+            <a href="javascript:history.back()">
+                <img src="../static/image/reset.png" style="width:70px; height:auto;" />
+            </a>
+            <a href={{url_for('route_main')}}>
+                <img src="../static/image/reset.png" style="width:70px; height:70px;"/>
+            </a>
+        </div>
         <div id="text-box">
             <p class="result1"></p><br>
             <script src="../static/js/start.js"></script>
         </div>
         <div id="next">
-            <a href={{url_for('route_luck')}}>다음</a>
+            <a href={{url_for('route_luck')}}>
+                <img src="../static/image/reset.png" style="width:70px; height:70px;"/>
+            </a>
         </div>
     </section>
 
