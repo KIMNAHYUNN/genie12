@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>지니의 타로램프</title>
+    <meta charset="utf-8">
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <link rel="stylesheet" href="../static/css/start.css">
+
+</head>
+
+<body>
+    <section class="background">
+        <a href="javascript:history.back()">뒤로가기</a>
+        <a href={{url_for('route_main')}}>다시하기</a>
+        <div id="text-box">
+            <p class="result1"></p><br>
+            <script src="../static/js/start.js"></script>
+        </div>
+        <div id="next">
+            <a href={{url_for('route_luck')}}>다음</a>
+        </div>
+    </section>
+
+</body>
+</html>
