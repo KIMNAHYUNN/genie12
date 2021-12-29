@@ -39,8 +39,8 @@ def route_exit():
 
 @app.route('/tarot')
 def route_tarot():
-    tarot_id = "TA02"
-    emotion_id = "EM02"
+    tarot_id = "TA04"
+    emotion_id = "0"
     try:
         save_user_info(tarot_id, emotion_id)
     except:
