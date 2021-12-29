@@ -46,7 +46,7 @@ String.prototype.toKorChars = function() {
 
 
 //타이핑할 문장
-    var result1  = "타로 설명문.....................................";
+    var result1  = "(예시) 오늘은 슬퍼보이시는 사용자님의 오늘의 운세 결과에요. 사용자님이 뽑으신 카드는 마술사 카드에요. 그동안 풀리지 않던 일을 해결할 아이디어가 떠오를 것 같아요.";
     var typeing1=[], typeing2=[];;
     result1 = result1.split(''); // 한글자씩자름
 
