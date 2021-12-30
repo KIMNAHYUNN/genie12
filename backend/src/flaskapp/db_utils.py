@@ -57,6 +57,23 @@ def save_user_info(tarot_id, emotion_id, intention_cd):
 	                    "WHERE A.USER_ID = B.USER_ID"
     secure_query(user_query, (tarot_id, emotion_id, intention_cd))
 
+def save_emotion_id(emotion_id):
+    save_query = "UPDATE IT_USER_MAS SET EMOTION_ID = %s WHERE USER_ID = 'TEST0001'"
+    secure_query(save_query, [emotion_id])
+
+def save_intention_cd(intention_cd):
+    save_query = "UPDATE IT_USER_MAS SET INTENTION_CD = %s WHERE USER_ID = 'TEST0001'"
+    secure_query(save_query, [intention_cd])
+
+def save_intention_cd(tarot_id):
+    save_query = "UPDATE IT_USER_MAS SET TAROT_ID = %s WHERE USER_ID = 'TEST0001'"
+    secure_query(save_query, [tarot_id])
+
+def get_tarot_id():
+    data_query = "SELECT TAROT_ID FROM IT_USER_MAS WHERE USER_ID = 'TEST0001'"
+    tarot_id = secure_query(data_query, ())
+    return tarot_id[0][0]
+
 def get_data():
     data_query = "SELECT " \
                  "F.INTENTION_NM,F.INTENTION_CD,F.FORTUNE_DESC,U.TAROT_NM, " \

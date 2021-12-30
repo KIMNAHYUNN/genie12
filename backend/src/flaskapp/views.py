@@ -1,6 +1,7 @@
 from flask import request, g, Response, jsonify, render_template
 from flaskapp import app
 from flaskapp.db_utils import *
+from flaskapp.vision import *
 import os
 
 @app.teardown_appcontext
@@ -41,7 +42,7 @@ def route_result():
         return Response(status=409)
     fortune_desc = data['fortune_desc']
     tarot_nm = data['tarot_nm']
-    file_name = "ta01.jpg"
+    file_name = data['image_path']
     file_path = os.path.join("../static/image/", file_name)
     # return jsonify({
     #     "fortune_desc" : fortune_desc,
@@ -58,3 +59,13 @@ def route_review():
 def route_exit():
     return render_template('exit.html')
 
+@app.route('/detect_emotion')
+def route_detect_emotion():
+    val = gen_frames()
+
+    return render_template('luck.html')
+
+
+# @app.route('/detect_intention')
+#
+# @app.route('/detect_tarot_id')
