@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>지니의 타로램프</title>
+    <meta charset="utf-8">
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript">
+        var result1 = '{{ fortune_desc }}'
+    </script>
+    <link rel="stylesheet" href="../static/css/result.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <section class="background">
+        <div id="preloader">
+            <div id="load-box">
+                <p>결과 분석중</p>
+        </div>
+            <div id="status">&nbsp;</div>
+        </div>
+        <div id="pos">
+            <a href={{url_for('route_main')}}>
+                <img src="../static/image/genie.png" style="width:90px; height:80px;"/>
+            </a>
+        </div>
+        <div id="detail-card"><img src={{ file_path }} style="position:absolute; top:0; left: 0; width: 100%; height: 100%;"></div>
+        <div id="face"><p>얼굴 사진</p></div>
+        <div id="text-box">
+            <p class="result1">{{ fortune_desc }}</p><br>
+            <script src="../static/js/result.js"></script>
+        </div>
+        <div id="back">
+            <a href="javascript:history.back()">
+                <img src="../static/image/back_negative.png" style="width:55px; height:55px;"/>
+            </a>
+        </div>
+        <div id="next">
+            <a href={{url_for('route_review')}}>
+                <img src="../static/image/next_negative.png" style="width:55px; height:55px;"/>
+            </a>
+        </div>
+    </section>
+</body>
+</html>

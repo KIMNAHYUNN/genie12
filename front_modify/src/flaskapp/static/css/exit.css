@@ -1,0 +1,97 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100vh;
+    user-select: none;
+    -moz-user-select: none;
+    overflow : hidden;
+}
+
+.background {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    background: url(../image/bg3.jpg);
+    background-repeat : no-repeat;
+    background-size : cover;
+}
+
+#doorWrap {
+    position: absolute;
+    bottom: 9.5vh;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #000;
+    z-index: 0;
+    clip: rect(-5vh, auto, 100vh, auto);
+    perspective: 90vw
+}
+
+#door {
+    transform-origin: 0 50%;
+    transition: transform 1s ease-out
+}
+
+.door {
+    position: absolute;
+    background: #000;
+    top: 0
+}
+
+#doorImage {
+    display: block;
+    width: 18vw;
+    height: 85vh;
+    pointer-events: none
+}
+
+#enter {
+    position: absolute;
+    /*background-image: url(../image/doorbg.jpg);
+    background-repeat : no-repeat;
+    background-size : cover;*/
+    width:300px;
+    height:300px;
+    position:absolute;
+    left:50%;
+    top:50%;
+    margin-left:-80px;
+    margin-top:-100px;
+    z-index: -1
+}
+/*
+.doorOpened #enter {
+    transform: translateX(0)
+}
+*/
+body.doorOpened #door {
+    transform: rotateY(-90deg)
+}
+
+.button{
+	display: inline-block;
+  	padding: 0.2em 0.8em;
+    border-radius: 45px;
+	color: #b2876f;
+  	margin-top:2rem;
+    font-family: 'East Sea Dokdo', cursive;
+  	font-size: 2.578rem;
+  	letter-spacing: 2px;
+  	text-transform: uppercase;
+  	text-decoration: none;
+	background: linear-gradient(to right, rgba(#b2876f, 0) 25%, rgba(#b2876f, .8) 75%);
+	background-position: 1% 50%;
+	background-size: 400% 300%;
+	border: 1px solid #b2876f;
+}
+.button:hover{
+        background-color: #b2876f;
+        color: black;
+    	background-position: 99% 50%;
+        transition: all ease 1s 0s;
+}
+
