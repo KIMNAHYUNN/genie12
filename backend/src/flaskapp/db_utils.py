@@ -1,10 +1,6 @@
-import base64
-import io
 import pymysql
 from flask import g
-from PIL import Image
-from io import BytesIO
-from base64 import b64encode
+
 def connect_db():
     try:
         db = pymysql.connect(
@@ -87,31 +83,6 @@ def get_data():
     }
     return info
 
-# def get_fortune_desc():
-#     fortune_desc_query = "SELECT FORTUNE_DESC FROM IT_USER_MAS U, IT_FORTUNE_MAS F " \
-#                         "WHERE U.FORTUNE_ID = F.FORTUNE_ID"
-#     fortune_desc = secure_query(fortune_desc_query, ())
-#     return fortune_desc[0][0]
-#
-# def get_tarot_info():
-#     tarot_info_query = "SELECT T.TAROT_NM, T.IMAGE_DATA FROM IT_USER_MAS U, IT_TAROT_MAS T " \
-#                         "WHERE U.TAROT_ID = T.TAROT_ID"
-#     tarot_info = secure_query(tarot_info_query, ())
-#     tarot_nm = tarot_info[0][0]
-#     file_name = "ta01"
-#
-#     # binary_data = base64.b64decode(image_data)
-#     # image = Image.open(BytesIO(base64.b64decode(image_data['img'])))
-#
-#     # image = b64encode(image_data.image).decode("utf-8")
-#     # image = image_data['image']
-#     # image = image.decode("UTF-8")
-#
-#     tarot_info = {
-#         'tarot_nm':tarot_nm,
-#         'file_name':file_name
-#     }
-#     return tarot_info
 
 
 
