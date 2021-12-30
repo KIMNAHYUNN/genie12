@@ -12,11 +12,8 @@
 <body>
     <section class="background">
         <div id="pos">
-            <a href="javascript:history.back()">
-                <img src="../static/image/reset.png" style="width:70px; height:70px;" />
-            </a>
             <a href={{url_for('route_main')}}>
-                <img src="../static/image/reset.png" style="width:70px; height:70px;" />
+                <img src="../static/image/genie.png" style="width:90px; height:80px;" />
             </a>
         </div>
         <div id="text-box">
@@ -25,9 +22,14 @@
         <div id="root"></div>
         <div id="detail-card"></div>
         <script src="../static/js/card.js"></script>
+        <div id="back">
+            <a href="javascript:history.back()">
+                <img src="../static/image/back_negative.png" style="width:55px; height:55px;"/>
+            </a>
+        </div>
         <div id="next">
             <a href={{url_for('route_result')}}>
-                <img src="../static/image/reset.png" style="width:70px; height:70px;" />
+                <img src="../static/image/next_negative.png" style="width:55px; height:55px;" />
             </a>
         </div>
     </section>

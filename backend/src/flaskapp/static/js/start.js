@@ -46,7 +46,7 @@ String.prototype.toKorChars = function() {
 
 
 //타이핑할 문장
-    var result1  = "오늘 기분은 어떠신가요?";
+    var result1  = "지니가 사용자님의 기분을 맞춰볼게요. 사진찍기 버튼을 눌러주세요.";
     var typeing1=[], typeing2=[];;
     result1 = result1.split(''); // 한글자씩자름
 
@@ -66,7 +66,7 @@ String.prototype.toKorChars = function() {
     var imax1 = typeing1.length;
 
     //setInterval을 이용해 반복적으로 출력 
-    var inter = setInterval(typi,150);
+    var inter = setInterval(typi,10);
 
 
     function typi(){

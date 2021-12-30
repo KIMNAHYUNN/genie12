@@ -20,6 +20,32 @@ a:visited { color: black; text-decoration: none;}
     background-repeat : no-repeat;
     background-size : cover;
 }
+#preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+    background: url(../image/result.png);
+  /* change if the mask should have another color then white */
+  z-index: 99;
+  /* makes sure it stays on top */
+}
+#status {
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  left: 50%;
+  /* centers the loading animation horizontally one the screen */
+  top: 55%;
+  /* centers the loading animation vertically one the screen */
+  background-image: url(../image/loader.gif);
+  /* path to your loading animation */
+  background-repeat: no-repeat;
+  background-position: center;
+  margin: -100px 0 0 -100px;
+  /* is width and height divided by two */
+}
 
 #pos {
     position: absolute;
@@ -30,11 +56,11 @@ a:visited { color: black; text-decoration: none;}
 }
 
 #detail-card {
-  width: 200px;
-  height :400px;
-  left:30%;
+  width: 180px;
+  height :360px;
+  left:35%;
   right:28%;
-  top:4%;
+  top:10%;
   border-radius: 10px;
   border: solid white;
   padding: 15px;
@@ -47,11 +73,11 @@ a:visited { color: black; text-decoration: none;}
   position: fixed;
 }
 #face {
-  width: 200px;
-  height :400px;
-  left:50%;
+  width: 180px;
+  height :360px;
+  left:55%;
   right:28%;
-  top:4%;
+  top:10%;
   border-radius: 10px;
   border: solid white;
   padding: 15px;
@@ -63,7 +89,16 @@ a:visited { color: black; text-decoration: none;}
   z-index: 2;
   position: fixed;
 }
-
+#load-box {
+    position: absolute;
+    left:42%;
+    right:38%;
+    top:24%;
+    font-size: 4.9vw;
+    color: #fff;
+    font-family: 'East Sea Dokdo', cursive;
+    font-weight: 200;
+}
 #text-box {
     position: absolute;
     left:28%;
@@ -82,8 +117,13 @@ p.result1{
     box-sizing: border-box;
     padding:0; margin:5px;
 }
+#back{
+    position: absolute;
+    left:6%;
+    top:87%;
+}
 #next{
     position: absolute;
-    left:49%;
-    top:90%;
+    left:90%;
+    top:87%;
 }

@@ -47,8 +47,8 @@
 
 
 //타이핑할 문장
-    var result1  = "보고싶은 운세를 선택하세요";
-    var result2  = " 오늘의 운세 "+" 성취운 "+" 금전운 ";
+    var result1  = "보고싶은 운세를 선택해주세요.";
+    var result2  = " [ 오늘의 운세 ] "+" [ 성취운 ] "+" [ 금전운 ] ";
     var typeing1=[], typeing2=[];;
     result1 = result1.split(''); // 한글자씩자름
     result2 = result2.split(''); // 한글자씩자름
@@ -75,7 +75,7 @@
     var imax2 = typeing2.length;
 
     //setInterval을 이용해 반복적으로 출력
-    var inter = setInterval(typi,150);
+    var inter = setInterval(typi,10);
     var inter2;
 
 
@@ -97,8 +97,8 @@
             i=0;
             j=0;
        setTimeout(function(){
-          inter2 = setInterval(typi2,150);
-             },400);
+          inter2 = setInterval(typi2,10);
+             },0);
 
     }
     }

@@ -11,24 +11,27 @@
 <body>
     <section class="background">
         <div id="pos">
-            <a href="javascript:history.back()">
-                <img src="../static/image/reset.png" style="width:70px; height:auto;" />
-            </a>
             <a href={{url_for('route_main')}}>
-                <img src="../static/image/reset.png" style="width:70px; height:auto;" />
+                <img src="../static/image/genie.png" style="width:90px; height:80px;" />
             </a>
         </div>
         <div id="text-box">
             <p class="result1"></p>
             <br>
-            <p class="result2" style="font-size: 40px;"></p>
-
-
+            <p class="result2" style="font-size: 75px;"></p>
             <script src="../static/js/luck.js"></script>
+        </div>
+        <div class="wrap">
+            <button class="button" onclick="location.href='#'">말하기</button>
+        </div>
+        <div id="back">
+            <a href="javascript:history.back()">
+                <img src="../static/image/back.png" style="width:55px; height:55px;"/>
+            </a>
         </div>
         <div id="next">
             <a href={{url_for('route_card')}}>
-                <img src="../static/image/reset.png" style="width:70px; height:auto;" />
+                <img src="../static/image/next.png" style="width:55px; height:55px;" />
             </a>
         </div>
     </section>

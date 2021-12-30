@@ -19,40 +19,37 @@ def route_main():
 def route_start():
     return render_template('start.html')
 
-@app.route('/luck')
-def route_luck():
-    return render_template('luck.html')
+# @app.route('/luck')
+# def route_luck():
+#     intention_nm = "오늘의 운세"
+#     save_intention_nm(intention_nm)
+#     return render_template('luck.html')
 
 @app.route('/card')
 def route_card():
+    tarot_id = "TA05"
+    save_tarot_id(tarot_id)
     return render_template('card.html')
 
 @app.route('/result')
 def route_result():
-    tarot_id = "TA04"
-    emotion_id = "0"
-    intention_cd = "1"
     try:
-        save_user_info(tarot_id, emotion_id, intention_cd)
+        save_user_info()
     except:
-        return Response(status=409)
+        return Response(status=403)
     try:
         data = get_data()
     except:
         return Response(status=409)
     fortune_desc = data['fortune_desc']
-    tarot_nm = data['tarot_nm']
     file_name = data['image_path']
     file_path = os.path.join("../static/image/", file_name)
-    # return jsonify({
-    #     "fortune_desc" : fortune_desc,
-    #     "tarot_nm" : tarot_nm,
-    #     "file_name" : file_name
-    # })
-    return render_template('result.html', fortune_desc=fortune_desc, tarot_nm=tarot_nm, file_path=file_path)
+    return render_template('result.html', fortune_desc=fortune_desc, file_path=file_path)
 
 @app.route('/review')
 def route_review():
+    tarot_result = 4
+    save_tarot_result(tarot_result)
     return render_template('review.html')
 
 @app.route('/exit')
@@ -61,8 +58,14 @@ def route_exit():
 
 @app.route('/detect_emotion')
 def route_detect_emotion():
-    val = gen_frames()
-
+    response_data = gen_frames()
+    bool = response_data['emotion']
+    if bool:
+        save_emotion_id("EM01")
+    else:
+        save_emotion_id("EM00")
+    intention_nm = "오늘의 운세"
+    save_intention_nm(intention_nm)
     return render_template('luck.html')
 
 

@@ -35,39 +35,31 @@ def secure_query(base_query, var_tuple):
 
         return result
 
-def save_user_info(tarot_id, emotion_id, intention_cd):
-    user_query = "UPDATE IT_USER_MAS A, " \
-                    "(SELECT 'TEST0001' AS USER_ID, "  \
-                        "F.TAROT_ID, T.TAROT_NM, F.EMOTION_ID, E.EMOTION_NM, F.FORTUNE_ID, F.INTENTION_CD, F.INTENTION_NM " \
-		            "FROM IT_FORTUNE_MAS F, IT_EMOTION_MAS E, IT_TAROT_MAS T " \
-		            "WHERE F.tarot_id = %s "\
-                        "AND F.emotion_id = ( CASE %s "\
-				            "WHEN '0'  THEN 'EM00' " \
-				            "WHEN '1'  THEN 'EM01' " \
-								    "END) " \
-		                "AND intention_cd = %s " \
-		                "AND F.tarot_id = T.tarot_id " \
-		                "AND F.emotion_id = E.emotion_id) B " \
-                    "SET A.TAROT_ID = B.TAROT_ID, " \
-	                "A.TAROT_NM = B.TAROT_NM, " \
-                    "A.EMOTION_ID = B.EMOTION_ID, " \
-                    "A.EMOTION_NM = B.EMOTION_NM, " \
-                    "A.INTENTION_NM = B.INTENTION_NM, " \
-                    "A.FORTUNE_ID = B.FORTUNE_ID " \
-	                    "WHERE A.USER_ID = B.USER_ID"
-    secure_query(user_query, (tarot_id, emotion_id, intention_cd))
-
 def save_emotion_id(emotion_id):
     save_query = "UPDATE IT_USER_MAS SET EMOTION_ID = %s WHERE USER_ID = 'TEST0001'"
     secure_query(save_query, [emotion_id])
 
-def save_intention_cd(intention_cd):
-    save_query = "UPDATE IT_USER_MAS SET INTENTION_CD = %s WHERE USER_ID = 'TEST0001'"
-    secure_query(save_query, [intention_cd])
+def save_intention_nm(intention_nm):
+    save_query = "UPDATE IT_USER_MAS SET INTENTION_NM = %s WHERE USER_ID = 'TEST0001'"
+    secure_query(save_query, [intention_nm])
 
-def save_intention_cd(tarot_id):
+def save_tarot_id(tarot_id):
     save_query = "UPDATE IT_USER_MAS SET TAROT_ID = %s WHERE USER_ID = 'TEST0001'"
     secure_query(save_query, [tarot_id])
+
+def save_tarot_result(tarot_result):
+    save_query = "UPDATE IT_USER_MAS SET TAROT_RESULT = %s WHERE USER_ID = 'TEST0001'"
+    secure_query(save_query, [tarot_result])
+
+def save_user_info():
+    user_query = "UPDATE IT_USER_MAS U, IT_FORTUNE_MAS F,IT_EMOTION_MAS E, IT_TAROT_MAS T " \
+                "SET U.FORTUNE_ID = F.FORTUNE_ID, U.TAROT_NM = T.TAROT_NM, U.EMOTION_NM = E.EMOTION_NM " \
+                "WHERE U.INTENTION_NM = F.INTENTION_NM " \
+                    "AND U.TAROT_ID = F.TAROT_ID " \
+                    "AND U.EMOTION_ID = F.EMOTION_ID " \
+                    "AND U.TAROT_ID = T.TAROT_ID " \
+                    "AND U.EMOTION_ID = E.EMOTION_ID"
+    secure_query(user_query, ())
 
 def get_tarot_id():
     data_query = "SELECT TAROT_ID FROM IT_USER_MAS WHERE USER_ID = 'TEST0001'"
@@ -77,15 +69,11 @@ def get_tarot_id():
 def get_data():
     data_query = "SELECT " \
                  "F.INTENTION_NM,F.INTENTION_CD,F.FORTUNE_DESC,U.TAROT_NM, " \
-                 "U.TAROT_ID, U.EMOTION_NM, U.EMOTION_ID, " \
-                    "( CASE U.EMOTION_ID " \
-		                "WHEN 'EM00'  THEN '0' " \
-		                "WHEN 'EM01'  THEN '1' " \
-	                "END) AS EMOTION_ID, T.IMAGE_PATH " \
+                 "U.TAROT_ID, U.EMOTION_NM, U.EMOTION_ID, T.IMAGE_PATH " \
                 "FROM IT_FORTUNE_MAS F, " \
                 "IT_USER_MAS U, IT_TAROT_MAS T " \
-                "WHERE USER_ID = 'TEST0001' "\
-                "AND F.FORTUNE_ID = U.FORTUNE_ID "\
+                "WHERE USER_ID = 'TEST0001' " \
+                "AND F.FORTUNE_ID = U.FORTUNE_ID " \
                 "AND U.TAROT_ID = T.TAROT_ID"
     data = secure_query(data_query, ())
     info = {

@@ -8,8 +8,10 @@ body {
     -moz-user-select: none;
     overflow : hidden;
 }
+
 a:link { color: red; text-decoration: none;}
 a:visited { color: black; text-decoration: none;}
+
 .background {
     position: absolute;
     left: 0;
@@ -31,10 +33,10 @@ a:visited { color: black; text-decoration: none;}
 
 #text-box {
     position: absolute;
-    left:30%;
-    right:28%;
-    top:42%;
-    font-size: 6.5vw;
+    left:26.5%;
+    right:23.5%;
+    top:33%;
+    font-size: 5vw;
     color: #000;
     font-family: 'East Sea Dokdo', cursive;
     font-weight: 500;
@@ -43,9 +45,47 @@ a:visited { color: black; text-decoration: none;}
 p.result1{
     display: inline-block;
     height:10px;
-    line-height: 90px;
+    line-height: 110px;
     box-sizing: border-box;
     padding:0; margin:5px;
+}
+
+.wrap {
+  height: 100%;
+  position: absolute;
+  left:45%;
+  right:28%;
+  top:70%;
+}
+
+.button {
+  width: 165px;
+  height: 55px;
+  font-family: 'East Sea Dokdo', cursive;
+  font-size: 45px;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  font-weight: 500;
+  color: #fff;
+  background-color: #000;
+  border: none;
+  border-radius: 45px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  outline: none;
+  }
+
+.button:hover {
+  background-color: #fff;
+  box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.5);
+  color: #000;
+  transform: translateY(-7px);
+}
+#back{
+    position: absolute;
+    left:27.5%;
+    top:70%;
 }
 #next{
     position: absolute;
