@@ -1,4 +1,3 @@
-import torch
 import torch.nn as nn
 
 class MiniXception(nn.Module):
@@ -7,9 +6,9 @@ class MiniXception(nn.Module):
         super(MiniXception, self).__init__()
         self.num_classes = num_classes
 
-        # Original code resize image into (64, 64). But we will use original size.
+        # 원캐 코드는 (64, 64) 이미지로 리사이즈 하였지만 우리는 데이터셋에 있는 그대로 사용
+        # 코드 단순화를 위해 out channel로 4가 아닌 5를 지정
         # Input: (1, 48, 48)
-        # Use out channels 4 instead of 5 for simplicity.
         self.start_layers = nn.Sequential(
             nn.Conv2d(1, 4, 3, bias=False), # (4, 46, 46)
             nn.BatchNorm2d(4, eps, momentum),
@@ -19,11 +18,12 @@ class MiniXception(nn.Module):
             nn.ReLU()
         )
 
+        # 신경망 가운데에 위치한 4개의 블록
         self.blocks = nn.ModuleList([Block(in_channels, None, eps, momentum) for in_channels in [4, 8, 16, 32]])
 
         self.conv = nn.Conv2d(64, self.num_classes, 3, padding="same")
-        self.gap = nn.AdaptiveAvgPool2d((1,1)) # Global average pooling (C, 1, 1)
-        self.softmax = nn.Softmax(dim = 1) # (C, 1, 1)
+        self.gap = nn.AdaptiveAvgPool2d((1,1)) # Global average pooling, (감정 개수, 1, 1)
+        self.softmax = nn.Softmax(dim = 1) # (감정 개수, 1, 1)
 
     def forward(self, x):
         x = self.start_layers(x)
@@ -33,7 +33,7 @@ class MiniXception(nn.Module):
         
         x = self.conv(x)
         x = self.gap(x)
-        x = x.view(-1, x.shape[1]) # (C, 1, 1) => (C,)
+        x = x.view(-1, x.shape[1]) # (감정 개수, 1, 1) => (감정 개수,)
         return self.softmax(x)
 
 class DepthWiseSepConv(nn.Module):
@@ -59,9 +59,12 @@ class Block(nn.Module):
                                   stride=2, padding=0, bias=False)
         self.bnorm_res = nn.BatchNorm2d(self.out_channels, eps, momentum)
         
+        # Depthwise Seperable Convolution
         self.dws_conv_1 = DepthWiseSepConv(self.in_channels, self.out_channels, 3)
         self.bnorm_1 = nn.BatchNorm2d(self.out_channels, eps, momentum)
         self.act_1 = nn.ReLU()
+
+        # Deppthwise Seperable Convolution
         self.dws_conv_2 = DepthWiseSepConv(self.out_channels, self.out_channels, 3)
         self.bnorm_2 = nn.BatchNorm2d(self.out_channels, eps, momentum)
         self.pool = nn.MaxPool2d(3, stride=2, padding=1)

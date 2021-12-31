@@ -7,7 +7,6 @@ from flask import Flask, render_template, Response, jsonify
 ### opencv
 from pathlib import Path
 
-import numpy as np
 import cv2 as cv
 import os
 from flaskapp.emotion_recog import load_fer_model, inference
@@ -43,7 +42,7 @@ def draw_text(coords, img, text, color):
     line_type = cv.LINE_AA
 
     cv.putText(img, text, org, cv.FONT_HERSHEY_SIMPLEX,
-               font_scale, color, thickness, cv.LINE_AA)
+               font_scale, color, thickness, line_type)
 
 # emotion data
 global value_emo

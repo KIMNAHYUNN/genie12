@@ -1,7 +1,5 @@
-import os
 import json
 import time
-import pickle
 import logging
 import datetime
 from pathlib import Path
@@ -12,7 +10,7 @@ from torch.utils.data import DataLoader
 
 from model import MiniXception
 from dataset import (emotions, positive_emotions, NUM_CLASSES,
-                    load_and_cache_dataset, transform, FER13)
+                    load_and_cache_dataset, normalize_transform)
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
     
@@ -39,7 +37,7 @@ def inference(model, image):
     웹 캠에서 이미지 하나를 입력 받아 감정을 판별 할 때 사용
     입력은 (48, 48) 크기의 흑백 numpy 텐서.
     """
-    transformed = transform(image)
+    transformed = normalize_transform(image)
     transformed = transformed.view(1, 1, 48, 48) # 모델에 맞게 이미지 차원 변환
     
     result = model(transformed) # 이미지를 딥러닝 모델에 입력
@@ -80,7 +78,7 @@ def evaluate(dataloader, model, loss_fn):
     return val_loss, acc
 
 def train(save_model):
-    """트레이닝 셋에서 학습"""
+    # 하이퍼 파라미터
     config = {
         "num_classes": NUM_CLASSES,
         "batch_size": 256,
@@ -90,9 +88,10 @@ def train(save_model):
         "eps": 0.001,
         "max_epochs": 40,
         "random_seed": 42,
-        "tag": "borm_eps_0.001_moementum_0.09_eval"
+        "tag": "test"
     }
 
+    # 일관성을 위해 랜덤 시드 설정
     torch.manual_seed(config["random_seed"])
     
     # 데이터셋 불러오기
@@ -104,8 +103,9 @@ def train(save_model):
     test_dataloader = DataLoader(test_dataset, batch_size=config["batch_size"],
                                  shuffle=True)
     
+    # 딥러닝 모델 생성
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    model = MiniXception(config["num_classes"], config["eps"], config["momentum"]) # 딥러닝 모델 생성   
+    model = MiniXception(config["num_classes"], config["eps"], config["momentum"])    
     model.to(device)
     
     # Cross Entropy 손실 함수와 Adam 옵티마이저 사용
@@ -124,22 +124,24 @@ def train(save_model):
         model.train()
         total = len(train_dataloader.dataset)
         for batch, (images, labels) in enumerate(train_dataloader):
-            # Compute prediction and loss
             images = images.to(device)
             labels = labels.to(device)
+            
+            # 실제 정답과 예측 결과 사이의 loss 계산
             pred = model(images)
             loss = loss_fn(pred, labels)
 
-            # Backpropagation
-            optimizer.zero_grad() # Make gradient of the weights zero
-            loss.backward() # Calculate gradient
-            optimizer.step() # Update weights
-
+            # 역전파(Backpropagation)
+            optimizer.zero_grad() # 기존 Weight들의 gradient 0으로 초기화
+            loss.backward() # Gradient 계산
+            optimizer.step() # Weight 업데이트
+            
             if batch % 100 == 0:
                 loss_val = loss.item()
                 current = batch * config["batch_size"]
                 logging.info(f"loss: {loss_val:>7f}  [{current:>5d}/{total:>5d}]")
 
+        # 한 epoch 마다 모델 평가
         logging.info(f"Evalution at epoch {epoch}")
         val_loss, acc = evaluate(test_dataloader, model, loss_fn)
         

@@ -3,11 +3,8 @@ import pickle
 import logging
 from pathlib import Path
 
-import torch
 from torch.utils.data import Dataset
-from torchvision import datasets
 from torchvision.io import read_image
-from torchvision.datasets import ImageFolder
 from torchvision.transforms import transforms
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
@@ -17,9 +14,8 @@ positive_emotions = ["happy", "neutral", "surprise"]
 NUM_CLASSES = len(emotions)
 
 # TODO: add random transformation
-'''
 train_transform = transforms.Compose([transforms.ToPILImage(),
-                                       #transforms.Grayscale(num_output_channels=1),
+                                      transforms.Grayscale(num_output_channels=1),
                                       transforms.RandomPerspective(distortion_scale=0.1),
                                       transforms.RandomHorizontalFlip(p=0.5),
                                       transforms.RandomRotation(degrees=(-10,10), fill=50),
@@ -27,21 +23,12 @@ train_transform = transforms.Compose([transforms.ToPILImage(),
                                       transforms.ToTensor(),
                                       transforms.Normalize((0.5,), (0.5,))
 ])
-'''
 
-val_transform = transforms.Compose([transforms.ToPILImage(),#transforms.Grayscale(num_output_channels=1),
-                                    transforms.ToTensor(),
-                                    transforms.Normalize((0.5,), (0.5,))
-])
-
+#이미지 텐서를 -1 에서 1 로 정규화   
 normalize_transform = transforms.Compose([transforms.ToPILImage(),
                                         transforms.ToTensor(),
                                           transforms.Normalize((0.5,), (0.5,))
 ])
-#print(normalize_transform(read_image("./FER-2013/train/angry/PrivateTest_88305.jpg")))
-def transform(img_tensor):
-    """이미지 텐서를 -1 에서 1 로 정규화"""
-    return torch.Tensor((img_tensor/255.0 - 0.5)*2) 
 
 class FER13(Dataset):
     """Dataset object for https://www.kaggle.com/msambare/fer2013"""
@@ -52,8 +39,6 @@ class FER13(Dataset):
             emotion_dir = path.joinpath(emotion)
             for file_path in emotion_dir.iterdir():       
                 img_tensor = normalize_transform(read_image(str(file_path)))
-                
-                #img_tensor = transform(read_image(str(file_path)))
                 self.images.append(img_tensor)
                 self.labels.append(label)
 
