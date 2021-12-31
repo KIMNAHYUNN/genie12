@@ -81,7 +81,7 @@ def route_detect_intention():
     params = {'key': 'value'}
     response = requests.get('http://192.168.219.113:5000/fortuneType', params=params)
     response_data = response.json()
-    print("I got it! fortune type: " + response_data['fortyneType'])
+    print("I got it! fortune type: " + response_data['fortuneType'])
     return 'fortune type ok!'
 
 @app.route('/detect_tarot_id')

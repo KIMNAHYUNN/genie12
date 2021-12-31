@@ -22,7 +22,7 @@
             <script src="../static/js/luck.js"></script>
         </div>
         <div class="wrap">
-            <button class="button" onclick="location.href='#'">말하기</button>
+            <button class="button" onclick="location.href='{{ url_for( 'route_detect_intention') }}';">말하기</button>
         </div>
         <div id="back">
             <a href="javascript:history.back()">
