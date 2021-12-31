@@ -17,5 +17,6 @@ face_emotion_recog> venv\Scripts\activate
 ```
 
 # 학습
-1. https://www.kaggle.com/msambare/fer2013 에서 데이터셋을 다운로드
-2. 압축을 풀고 'train' 폴더와 'test' 폴더를 'dataset' 폴더로 이동 
+1. https://www.kaggle.com/msambare/fer2013 에서 데이터셋을 다운로드 후 압축 해제
+2. 'FER-2013' 폴더를 생성하고 'train' 폴더와 'test' 폴더를 이동
+3. emotion_recog.py 파일을 실행 

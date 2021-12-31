@@ -200,10 +200,4 @@ def test(exp_path):
     evaluate(test_dataloader, model, loss_fn)
         
 if __name__ == "__main__":
-    #train(True)
-    test(Path("models/211231-101211-0.5180-borm_eps_0.001_moementum_0.09_eval/"))
-    
-    #test(Path("models/211230-214916-0.5783-bs_256_lr_0.001_mo_0.99_eval/"))
-    #dataset_path = Path("./dataset/")
-    #train_dataset, test_dataset = load_and_cache_dataset(dataset_path)
-    
+    train(True)

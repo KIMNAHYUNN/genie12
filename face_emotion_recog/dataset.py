@@ -96,9 +96,3 @@ def load_and_cache_dataset(dataset_path):
 
 if __name__ == "__main__":
     load_and_cache_dataset(Path("./FER-2013"))
-    with open(Path("./FER-2013/train.pkl"), "rb") as f:
-        train = pickle.load(f)
-    with open(Path("./FER-2013/train_best.pkl"), "rb") as f:
-        train_best = pickle.load(f)
-    with open(Path("./FER-2013/train2.pkl"), "rb") as f:
-        train2 = pickle.load(f)
