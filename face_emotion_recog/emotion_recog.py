@@ -1,73 +1,65 @@
 import os
 import json
 import time
+import pickle
 import logging
 import datetime
+from pathlib import Path
 
 import torch
 import torch.nn as nn
-from torch.utils.data import Dataset, DataLoader
-from torchvision.io import read_image
+from torch.utils.data import DataLoader
 
 from model import MiniXception
+from dataset import (emotions, positive_emotions, NUM_CLASSES,
+                    load_and_cache_dataset, transform, FER13)
 
-emotions = ["angry", "disgust", "fear", "happy", "neutral", "sad", "surprise"]
-positive_emotions = ["happy", "neutral", "surprise"]
-
-NUM_CLASSES = 7
-
-class FER13(Dataset):
-    """Dataset object for https://www.kaggle.com/msambare/fer2013"""
-    def __init__(self, path):
-        self.images = []
-        self.labels = []
-        for label, emotion in enumerate(emotions):
-            emotion_dir = os.path.join(path, emotion)
-            for file_name in os.listdir(emotion_dir):
-                file_path = os.path.join(emotion_dir, file_name)
-                img_tensor = transform(read_image(file_path))
-                self.images.append(img_tensor)
-                self.labels.append(label)
-
-    def __getitem__(self, idx):
-        return self.images[idx], self.labels[idx]
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
     
-    def __len__(self):
-        return len(self.labels)
+def load_config(exp_path):
+    """config.json 파일 불러오기"""
+    config_path = exp_path.joinpath("config.json")
+    with open(config_path, 'rt') as f:
+        config = json.load(f)
+    return config
 
-def transform(img_tensor):
-    """Return image tensor normalized to -1 from 1"""
-    return torch.Tensor((img_tensor/255.0 - 0.5)*2) 
-
-def load_fer_model(model_path):
-    model = MiniXception(NUM_CLASSES)
-    model.load_state_dict(torch.load(model_path))
-    # model.eval() TODO: 왜 eval 넣으면 성능 떨어지는지 
+def load_fer_model(exp_path):
+    """저장된 모델 불러오기"""
+    config = load_config(exp_path)  
+    logging.info(f"Loading {config}")
+    model_path = exp_path.joinpath("model.pt")
+    model = MiniXception(config["num_classes"], config["eps"], config["momentum"])
+    model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
+    model.eval()
     return model
 
 def inference(model, image):
-    """Return emotion, probability of the emotion and is_positive_emotino(boolean).
-    
-    Input is (48, 48) gray numpy tensor.
+    """감정, 감정의 확률, 긍정 감정 여부를 반환
+
+    웹 캠에서 이미지 하나를 입력 받아 감정을 판별 할 때 사용
+    입력은 (48, 48) 크기의 흑백 numpy 텐서.
     """
     transformed = transform(image)
-    transformed = transformed.view(1, 1, 48, 48)
+    transformed = transformed.view(1, 1, 48, 48) # 모델에 맞게 이미지 차원 변환
     
-    result = model(transformed)
+    result = model(transformed) # 이미지를 딥러닝 모델에 입력
 
     result = result.squeeze() # (1, C) => (C,)
     emotion_idx = result.argmax().item()
-    emotion = emotions[emotion_idx]
+    emotion = emotions[emotion_idx] # 가장 높은 확률을 가진 감정
 
     probs = {emotion:prob for emotion, prob in zip(emotions, result.tolist())}   
-    prob = probs[emotion]
+    prob = probs[emotion] # 감정 확률
     
-    is_pos_emotion = emotion in positive_emotions
+    is_pos_emotion = emotion in positive_emotions # 긍정 감정 여부
     return emotion, prob, is_pos_emotion
 
 def evaluate(dataloader, model, loss_fn):
-    """Return validation loss and accuracy of the model"""
-    #model.eval()
+    """Validation loss와 모델 정확도 반환
+    
+    Test 셋에서 모델 성능 검증
+    """
+    model.eval()
     total = len(dataloader.dataset)
     num_batches = len(dataloader)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -75,50 +67,57 @@ def evaluate(dataloader, model, loss_fn):
     correct = 0
     with torch.no_grad():
         for images, labels in dataloader:
-            images = images.to(device)
+            images = images.to(device) # To GPU, if possible
             labels = labels.to(device)
             pred = model(images)
 
             total_loss += loss_fn(pred, labels).item()
             correct += (pred.argmax(1) == labels).type(torch.float).sum().item()
 
-    val_loss = total_loss / num_batches
-    acc = correct / total
+    val_loss = total_loss / num_batches # Validation loss
+    acc = correct / total # 모델의 정확도
     logging.info(f"Val loss: {val_loss:>8f} Acc: {(100*acc):>0.1f}%")
     return val_loss, acc
 
 def train(save_model):
+    """트레이닝 셋에서 학습"""
     config = {
-        "batch_size": 64,
-        "learning_rate":  1e-3,
+        "num_classes": NUM_CLASSES,
+        "batch_size": 256,
+        "learning_rate": 1e-3,
         "weight_decay": 0.01,
-        "max_epochs": 200,
+        "momentum": 0.99,
+        "eps": 0.001,
+        "max_epochs": 40,
         "random_seed": 42,
+        "tag": "borm_eps_0.001_moementum_0.09_eval"
     }
-    torch.manual_seed(config["random_seed"])
-    logging.info("Start loading datasest.")
-    start = time.time()
-    train_data_path = "./dataset/train"
-    test_data_path = "./dataset/test"
-    train_dataset = FER13(train_data_path)
-    test_dataset = FER13(test_data_path)
-    logging.info(f"End loading dataset. {time.time()-start:.2f} sec")
 
+    torch.manual_seed(config["random_seed"])
+    
+    # 데이터셋 불러오기
+    dataset_path = Path("./FER-2013/")
+    train_dataset, test_dataset = load_and_cache_dataset(dataset_path)
+    
     train_dataloader = DataLoader(train_dataset, batch_size=config["batch_size"],
                                   shuffle=True)
     test_dataloader = DataLoader(test_dataset, batch_size=config["batch_size"],
                                  shuffle=True)
     
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    model = MiniXception(NUM_CLASSES)   
+    model = MiniXception(config["num_classes"], config["eps"], config["momentum"]) # 딥러닝 모델 생성   
     model.to(device)
     
+    # Cross Entropy 손실 함수와 Adam 옵티마이저 사용
     loss_fn = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=config["learning_rate"],     
                                  weight_decay=config["weight_decay"])
+    
+    # 학습 시작
     logging.info("Start training.")
     start = time.time()
-    early_stop_count = 0
+
+    early_stopping_count = 0
     last_val_loss = 10**6
     exp_path = None
     for epoch in range(config["max_epochs"]):
@@ -132,9 +131,9 @@ def train(save_model):
             loss = loss_fn(pred, labels)
 
             # Backpropagation
-            optimizer.zero_grad() #?
-            loss.backward()
-            optimizer.step()
+            optimizer.zero_grad() # Make gradient of the weights zero
+            loss.backward() # Calculate gradient
+            optimizer.step() # Update weights
 
             if batch % 100 == 0:
                 loss_val = loss.item()
@@ -151,22 +150,24 @@ def train(save_model):
             early_stopping_count = 0
             saved_acc = acc
             saved_params = model.state_dict()
+            # 모델 저장
             if save_model:
                 if exp_path is not None:
-                    os.remove(model_path)
-                    os.remove(config_path)
-                    os.rmdir(exp_path)
-                now = datetime.datetime.now().strftime("%y%m%d-%H%M%S")
-                exp_path = f"./models/{now}-{saved_acc:.4f}"
-                os.makedirs(exp_path, exist_ok=True)
+                    model_path.unlink()
+                    config_path.unlink()
+                    exp_path.rmdir()
 
-                model_path = os.path.join(exp_path, "model.pt")
+                now = datetime.datetime.now().strftime("%y%m%d-%H%M%S")
+                exp_path = Path(f"./models/{now}-{saved_acc:.4f}-{config['tag']}")
+                exp_path.mkdir(parents=True, exist_ok=True)
+
+                model_path = exp_path.joinpath("model.pt")
                 torch.save(saved_params, model_path)
 
-                config_path = os.path.join(exp_path, "config.json")
+                config_path = exp_path.joinpath("config.json")
                 with open(str(config_path), 'w') as f:
                     json.dump(config, f, indent=4)
-
+                
                 logging.info(f"Save model at {exp_path}")
 
         if early_stopping_count == 3:
@@ -175,10 +176,34 @@ def train(save_model):
 
         last_val_loss = val_loss
     
-
-
     logging.info(f"End training.{time.time()-start:.2f} sec")
 
+def test(exp_path):
+    """학습된 모델을 테스트 셋에 시험해볼 때 사용"""
+    # config.json 파일 불러오기
+    config = load_config(exp_path)
+    torch.manual_seed(config["random_seed"])
+
+    # 데이터셋 불러오기
+    dataset_path = Path("./FER-2013/")
+    _, test_dataset = load_and_cache_dataset(dataset_path)
+    test_dataloader = DataLoader(test_dataset, batch_size=config["batch_size"],
+                                 shuffle=True)
+    
+    # 모델 불러오기
+    model = load_fer_model(exp_path)
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    model.to(device)
+    
+    # Cross Entropy 손실 함수와 Adam 옵티마이저 사용
+    loss_fn = nn.CrossEntropyLoss()
+    evaluate(test_dataloader, model, loss_fn)
+        
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
-    train(True)
+    #train(True)
+    test(Path("models/211231-101211-0.5180-borm_eps_0.001_moementum_0.09_eval/"))
+    
+    #test(Path("models/211230-214916-0.5783-bs_256_lr_0.001_mo_0.99_eval/"))
+    #dataset_path = Path("./dataset/")
+    #train_dataset, test_dataset = load_and_cache_dataset(dataset_path)
+    
