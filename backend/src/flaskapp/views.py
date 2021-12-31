@@ -1,7 +1,8 @@
-from flask import request, g, Response, jsonify, render_template
+from flask import request, g, Response, jsonify, render_template, redirect, url_for
 from flaskapp import app
 from flaskapp.db_utils import *
 from flaskapp.vision import *
+from flaskapp.voice import *
 import os
 
 @app.teardown_appcontext
@@ -19,17 +20,18 @@ def route_main():
 def route_start():
     return render_template('start.html')
 
-# @app.route('/luck')
-# def route_luck():
-#     intention_nm = "오늘의 운세"
-#     save_intention_nm(intention_nm)
-#     return render_template('luck.html')
+@app.route('/luck')
+def route_luck():
+    intention_nm = "오늘의 운세"
+    save_intention_nm(intention_nm)
+    return render_template('luck.html')
 
 @app.route('/card')
 def route_card():
     tarot_id = "TA05"
+    card_num = 5
     save_tarot_id(tarot_id)
-    return render_template('card.html')
+    return render_template('card.html', card_num=card_num)
 
 @app.route('/result')
 def route_result():
@@ -64,11 +66,28 @@ def route_detect_emotion():
         save_emotion_id("EM01")
     else:
         save_emotion_id("EM00")
-    intention_nm = "오늘의 운세"
-    save_intention_nm(intention_nm)
-    return render_template('luck.html')
+    return redirect(url_for('route_luck'))
 
+@app.route('/call_v2t')
+def wantV2T():
+    params = {'key': 'value'}
+    response = requests.get('http://192.168.219.113:5000/v2t', params=params)
+    response_data = response.json()
+    print("I got it!: " + response_data['v2t'])
+    return 'yes!'
 
-# @app.route('/detect_intention')
-#
-# @app.route('/detect_tarot_id')
+@app.route('/detect_intention')
+def route_detect_intention():
+    params = {'key': 'value'}
+    response = requests.get('http://192.168.219.113:5000/fortuneType', params=params)
+    response_data = response.json()
+    print("I got it! fortune type: " + response_data['fortyneType'])
+    return 'fortune type ok!'
+
+@app.route('/detect_tarot_id')
+def route_detect_card():
+    params = {'key': 'value'}
+    response = requests.get('http://192.168.219.113:5000/pickOneCard', params=params)
+    response_data = response.json()
+    print("I got it! prickOneCard: " + response_data['pickOnCard'])
+    return 'fortune type ok!'
