@@ -5,6 +5,7 @@ import requests
 from flask import Flask, render_template, Response, jsonify
 
 ### opencv
+from pathlib import Path
 
 import numpy as np
 import cv2 as cv
@@ -51,8 +52,8 @@ value_emo = None
 
 def gen_frames():
     detect_model = cv.CascadeClassifier(detect_model_path)
-    path = dir + "./models/211229-085713-0.5362/model.pt"
-    fer_model = load_fer_model(path)
+    path = dir + "./models/211231-100640-0.5086-bs_256_lr_0.001_mom_0.99_eps_0.001/"
+    fer_model = load_fer_model(Path(path))
 
     cap = cv.VideoCapture(0)  # Device index is 0
     if not cap.isOpened():

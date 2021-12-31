@@ -3,7 +3,7 @@ import torch.nn as nn
 
 class MiniXception(nn.Module):
     """PyTorch implementation of https://github.com/oarriaga/face_classification"""
-    def __init__(self, num_classes):
+    def __init__(self, num_classes, eps, momentum):
         super(MiniXception, self).__init__()
         self.num_classes = num_classes
 
@@ -12,14 +12,14 @@ class MiniXception(nn.Module):
         # Use out channels 4 instead of 5 for simplicity.
         self.start_layers = nn.Sequential(
             nn.Conv2d(1, 4, 3, bias=False), # (4, 46, 46)
-            nn.BatchNorm2d(4),
+            nn.BatchNorm2d(4, eps, momentum),
             nn.ReLU(),
             nn.Conv2d(4, 4, 3, bias=False), # (4, 44, 44)
-            nn.BatchNorm2d(4),
+            nn.BatchNorm2d(4, eps, momentum),
             nn.ReLU()
         )
 
-        self.blocks = nn.ModuleList([Block(in_channels) for in_channels in [4, 8, 16, 32]])
+        self.blocks = nn.ModuleList([Block(in_channels, None, eps, momentum) for in_channels in [4, 8, 16, 32]])
 
         self.conv = nn.Conv2d(64, self.num_classes, 3, padding="same")
         self.gap = nn.AdaptiveAvgPool2d((1,1)) # Global average pooling (C, 1, 1)
@@ -49,20 +49,21 @@ class DepthWiseSepConv(nn.Module):
         return self.pointwise(x)
 
 class Block(nn.Module):
-    def __init__(self, in_channels, out_channels=None):
+    def __init__(self, in_channels, out_channels=None, eps=1e-5, momentum=0.1):
         super(Block, self).__init__()
         self.in_channels = in_channels
         self.out_channels = 2*in_channels if out_channels is None else out_channels
 
+        # Residual
         self.conv_res = nn.Conv2d(self.in_channels, self.out_channels, kernel_size=1,
                                   stride=2, padding=0, bias=False)
-        self.bnorm_res = nn.BatchNorm2d(self.out_channels)
+        self.bnorm_res = nn.BatchNorm2d(self.out_channels, eps, momentum)
         
         self.dws_conv_1 = DepthWiseSepConv(self.in_channels, self.out_channels, 3)
-        self.bnorm_1 = nn.BatchNorm2d(self.out_channels)
+        self.bnorm_1 = nn.BatchNorm2d(self.out_channels, eps, momentum)
         self.act_1 = nn.ReLU()
         self.dws_conv_2 = DepthWiseSepConv(self.out_channels, self.out_channels, 3)
-        self.bnorm_2 = nn.BatchNorm2d(self.out_channels)
+        self.bnorm_2 = nn.BatchNorm2d(self.out_channels, eps, momentum)
         self.pool = nn.MaxPool2d(3, stride=2, padding=1)
 
     def forward(self, x):
@@ -113,5 +114,3 @@ class CNNBlock(nn.Module):
 
     def forward(self, x):
         return self.block(x)
-
-
