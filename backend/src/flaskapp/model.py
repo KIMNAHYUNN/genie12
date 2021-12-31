@@ -6,8 +6,8 @@ class MiniXception(nn.Module):
         super(MiniXception, self).__init__()
         self.num_classes = num_classes
 
-        # 원캐 코드는 (64, 64) 이미지로 리사이즈 하였지만 우리는 데이터셋에 있는 그대로 사용
-        # 코드 단순화를 위해 out channel로 4가 아닌 5를 지정
+        # 원래 코드는 (64, 64) 이미지로 리사이즈 하였지만 우리는 데이터셋에 있는 그대로 사용
+        # 원래 코드는 out channel이 5였지만 단순화를 위해 4를 지정
         # Input: (1, 48, 48)
         self.start_layers = nn.Sequential(
             nn.Conv2d(1, 4, 3, bias=False), # (4, 46, 46)
