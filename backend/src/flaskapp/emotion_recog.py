@@ -8,8 +8,8 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
 
-from model import MiniXception
-from dataset import (emotions, positive_emotions, NUM_CLASSES,
+from flaskapp.model import MiniXception
+from flaskapp.dataset import (emotions, positive_emotions, NUM_CLASSES,
                     load_and_cache_dataset, normalize_transform)
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
