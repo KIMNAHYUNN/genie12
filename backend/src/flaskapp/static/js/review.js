@@ -87,31 +87,27 @@ String.prototype.toKorChars = function() {
         }
     }
 
-function save() {
+    function post_star(star){
+        $.ajax({
+                type : 'POST',
+                url : link_detect,
+                data : {
+                       star:star
+                },
+                dataType : 'JSON',
+        });
+    }
+
+    function save() {
         var obj_length = document.getElementsByName("star").length;
 
         for (var i=0; i<obj_length; i++) {
             if (document.getElementsByName("star")[i].checked == true) {
-                alert(document.getElementsByName("star")[i].value);
+                post_star(document.getElementsByName("star")[i].value);
+                location.href=link_exit
             }
         }
+
     }
-/*
-function test(){
-        var star_data = $('#star').val();
-        $.ajax({
-                type : 'POST',
-                url : '/detect_result',
-                data : {
-                       star:star_data
-                },
-                dataType : 'JSON',
-                success : function(result){
-                        alert("result = "+ result);
-                },
-                error : function(xtr,status,error){
-                        alert(xtr +":"+status+":"+error);
-                }
-        });
-}
-*/
+
+

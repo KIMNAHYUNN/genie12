@@ -2,7 +2,6 @@ from flask import request, g, Response, jsonify, render_template, redirect, url_
 from flaskapp import app
 from flaskapp.db_utils import *
 from flaskapp.vision import *
-from flaskapp.voice import *
 import os
 import random
 
@@ -92,13 +91,8 @@ def route_detect_intention():
     print("I got it! fortune type: " + response_data['fortuneType'])
     return 'fortune type ok!'
 
-@app.route('/detect_tarot_id')
-def route_detect_card():
-    tarot_id = random.randrange(0,22)
-
-    return 'fortune type ok!'
-
-@app.route('/detect_result')
+@app.route('/detect_result', methods=['POST'])
 def route_detect_result():
-
-    return 'fortune type ok!'
+    star = request.form['star']
+    save_tarot_result(star)
+    return star
