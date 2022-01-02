@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>지니의 타로램프</title>
+    <meta charset="utf-8">
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <link rel="stylesheet" href="../static/css/start.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <section class="background">
+        <div id="pos">
+            <a href={{url_for('route_main')}}>
+                <img src="../static/image/genie.png" style="width:90px; height:80px;"/>
+            </a>
+        </div>
+        <div id="text-box">
+            <p class="result1"></p><br>
+            <script src="../static/js/start.js"></script>
+        </div>route_detect_emotion
+        <div class="wrap">
+            <button class="button" onclick="window.location.href='{{ url_for( 'route_detect_emotion') }}';">사진찍기</button>
+        </div>
+        <div id="back">
+            <a href="javascript:history.back()">
+                <img src="../static/image/back.png" style="width:55px; height:55px;"/>
+            </a>
+        </div>
+        <div id="next">
+            <a href={{url_for('route_luck')}}>
+                <img src="../static/image/next.png" style="width:55px; height:55px;"/>
+            </a>
+        </div>
+    </section>
+
+</body>
+</html>
