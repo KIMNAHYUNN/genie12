@@ -27,7 +27,9 @@ backend용 기기와 라즈베리 파이가 동일 와이파이에 연결되어�
 
 >sudo apt install dhcpcd
 
+
 /etc/dhcpcd.conf 파일 내에서는 다음 두 줄을 변경합니다.
+
 
 **static ip_address = 본인 IP 주소 (ifconfig)**
 
