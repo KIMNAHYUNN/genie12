@@ -37,5 +37,5 @@ sudo apt install dhcpcd
 ```
 static ip_address = 본인 IP 주소 (ifconfig)
 
-static routers = 게이트웨이 주소 (맨 끝자리만 1
+static routers = 게이트웨이 주소 (맨 끝자리만 1)
 ```
