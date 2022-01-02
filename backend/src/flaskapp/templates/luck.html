@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>지니의 타로램프</title>
+    <meta charset="utf-8">
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <link rel="stylesheet" href="../static/css/luck.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&display=swap" rel="stylesheet"></head>
+<body>
+    <section class="background">
+        <div id="pos">
+            <a href={{url_for('route_main')}}>
+                <img src="../static/image/genie.png" style="width:90px; height:80px;" />
+            </a>
+        </div>
+        <div id="text-box">
+            <p class="result1"></p>
+            <br>
+            <p class="result2" style="font-size: 75px;"></p>
+            <script src="../static/js/luck.js"></script>
+        </div>
+        <div class="wrap">
+            <button class="button" onclick="location.href='{{ url_for( 'route_detect_intention') }}';">말하기</button>
+        </div>
+        <div id="back">
+            <a href="javascript:history.back()">
+                <img src="../static/image/back.png" style="width:55px; height:55px;"/>
+            </a>
+        </div>
+        <div id="next">
+            <a href={{url_for('route_card')}}>
+                <img src="../static/image/next.png" style="width:55px; height:55px;" />
+            </a>
+        </div>
+    </section>
+
+</body>
+</html>
