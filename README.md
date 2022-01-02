@@ -25,10 +25,10 @@ backend용 기기와 라즈베리 파이가 동일 와이파이에 연결되어�
 고정 IP는 /etc/dhcpcd.conf 에서 변경하면 됩니다.
 해당 파일이 존재하지 않는다면 dhcp 패키지를 먼저 설치해주세요.
 
-sudo apt install dhcpcd
+>sudo apt install dhcpcd
 
 /etc/dhcpcd.conf 파일 내에서는 다음 두 줄을 변경합니다.
 
-static ip_address = 본인 IP 주소 (ifconfig)
+**static ip_address = 본인 IP 주소 (ifconfig)**
 
-static routers = 게이트웨이 주소 (맨 끝자리만 1)
+**static routers = 게이트웨이 주소 (맨 끝자리만 1)**
