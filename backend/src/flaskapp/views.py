@@ -4,6 +4,7 @@ from flaskapp.db_utils import *
 from flaskapp.vision import *
 from flaskapp.voice import *
 import os
+import random
 
 @app.teardown_appcontext
 def close_db(e=None):
@@ -28,10 +29,17 @@ def route_luck():
 
 @app.route('/card')
 def route_card():
-    tarot_id = "TA05"
-    card_num = 5
+    # tarot_id = "TA05"
+    tarot_id = random.randrange(0, 22)
+    if tarot_id < 10:
+        tarot_id = 'TA' + '0' + str(tarot_id)
+    else:
+        tarot_id = 'TA' + str(tarot_id)
     save_tarot_id(tarot_id)
-    return render_template('card.html', card_num=card_num)
+    file_path = os.path.join('../static/image/', tarot_id)
+    file_path += '.jpg'
+    print(file_path)
+    return render_template('card.html', file_path=file_path)
 
 @app.route('/result')
 def route_result():
@@ -86,8 +94,11 @@ def route_detect_intention():
 
 @app.route('/detect_tarot_id')
 def route_detect_card():
-    params = {'key': 'value'}
-    response = requests.get('http://192.168.219.113:5000/pickOneCard', params=params)
-    response_data = response.json()
-    print("I got it! prickOneCard: " + response_data['pickOnCard'])
+    tarot_id = random.randrange(0,22)
+
+    return 'fortune type ok!'
+
+@app.route('/detect_result')
+def route_detect_result():
+
     return 'fortune type ok!'
