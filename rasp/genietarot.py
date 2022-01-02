@@ -36,12 +36,11 @@ def mainee():
 			print('질의한 내용이 없습니다.\n\n\n')
 		elif tts_result == 500:
 			print("TTS 동작 에러입니다.\n\n\n")
-			break
 		else:
 			MS.play_file("result_mesg.wav")			
 		    #time.sleep(2)
-		else:
-			print('KWS Not Dectected ...')
+	else:
+		print('KWS Not Dectected ...')
 
 ############################################################
 ############################################################
@@ -53,7 +52,7 @@ def hello_world():
     
 @app.route('/fortuneType')
 def fortuneType():
-    text = mainee()
+	text = mainee()
 	if text == "오늘의 운세를 봐드릴게요.":
 		return jsonify({'fortuneType': '오늘의 운세'})
 	elif text == "성취운을 봐드릴게요.":
@@ -61,7 +60,7 @@ def fortuneType():
 	elif text == "금전운을 봐드릴게요.":
 		return jsonify({'fortuneType': '금전운'})
 	else:
-		return jsonify({'fortuneType': '오늘의 운세'})
+		return jsonify({'fortuneType': 'oops'})
     
 if __name__ == '__main__':
    	#app.run(debug=True, host='0.0.0.0', port=5000, threaded=True)
