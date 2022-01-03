@@ -22,18 +22,19 @@ genietarot.py 를 예제 파일들이 들어있는 python3 폴더에 넣어줍�
 라즈베리 파이에서는 서버 실행 시 python3 파일명 으로 실행해주어야 합니다.
 genietarot.py 는 localhost:5000 에서 실행됩니다.
 
-~~### 2. 고정 IP 설정
+### 2. 고정 IP 설정
 
-backend용 기기와 라즈베리 파이가 동일 와이파이에 연결되어있는지 확인하고, 라즈베리 파이의 IP를 고정 IP로 변경해주세요.
+~~backend용 기기와 라즈베리 파이가 동일 와이파이에 연결되어있는지 확인하고, 라즈베리 파이의 IP를 고정 IP로 변경해주세요.
 
-고정 IP는 /etc/dhcpcd.conf 에서 변경하면 됩니다.
-해당 파일이 존재하지 않는다면 dhcp 패키지를 먼저 설치해주세요.
+~~고정 IP는 /etc/dhcpcd.conf 에서 변경하면 됩니다.
+
+~~해당 파일이 존재하지 않는다면 dhcp 패키지를 먼저 설치해주세요.
 
 ```
 sudo apt install dhcpcd5
 ```
 
-그리고 /etc/dhcpcd.conf 파일 내에서는 다음 두 줄을 변경합니다.
+~~그리고 /etc/dhcpcd.conf 파일 내에서는 다음 두 줄을 변경합니다.
 
 ```
 static ip_address = 본인 IP 주소 (ifconfig)
