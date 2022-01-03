@@ -86,3 +86,28 @@ String.prototype.toKorChars = function() {
             clearInterval(inter);
         }
     }
+
+    function post_star(star){
+        $.ajax({
+                type : 'POST',
+                url : link_detect,
+                data : {
+                       star:star
+                },
+                dataType : 'JSON',
+        });
+    }
+
+    function save() {
+        var obj_length = document.getElementsByName("star").length;
+
+        for (var i=0; i<obj_length; i++) {
+            if (document.getElementsByName("star")[i].checked == true) {
+                post_star(document.getElementsByName("star")[i].value);
+                location.href=link_exit
+            }
+        }
+
+    }
+
+
