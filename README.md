@@ -57,7 +57,15 @@ static routers = 게이트웨이 주소 (맨 끝자리만 1)
 
 ```
 sudo apt update
+
 sudo apt-get install ufw
 sudo ufw allow 22
 sudo ufw allow 5000
+
+sudo apt-get install libasound-dev
+sudo apt-get install libportaudio0 libportaudio2 libportaudiocpp0 portaudio19-dev -y
+sudo apt-get install python3-pyaudio
+cd ~/ai-makers-kit/python/install/
+sudo python3 -m easy_install ktkws-1.0.1-py3.5-linux-armv7l.egg
+sudo pip3 install grpcio grpcio-tools
 ```
