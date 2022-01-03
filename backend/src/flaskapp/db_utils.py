@@ -23,16 +23,9 @@ def secure_query(base_query, var_tuple):
     database = get_db()
 
     with database.cursor() as cursor:
-        # query = cursor.mogrify(base_query, var_tuple)
         cursor.execute(base_query, var_tuple)
-
-        # if b'SELECT' in query or b'RETURNING' in query:
-        #
         result = cursor.fetchall()
-        # else:
-        #     result = None
         database.commit()
-
         return result
 
 def save_emotion_id(emotion_id):

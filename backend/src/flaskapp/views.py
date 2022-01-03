@@ -90,8 +90,17 @@ def route_detect_intention():
     params = {'key': 'value'}
     response = requests.get('http://192.168.219.113:5000/fortuneType', params=params)
     response_data = response.json()
+    response_data = response_data['fortuneType']
+    if response_data == 'fortune_today':
+        save_intention_nm('오늘의 운세')
+    elif response_data == 'fortune_success':
+        save_intention_nm('성취운')
+    elif response_data == 'fortune_money':
+        save_intention_nm('금전운')
+
     print("I got it! fortune type: " + response_data['fortuneType'])
     return 'fortune type ok!'
+    # return redirect(url_for('route_card'))
 
 @app.route('/detect_result', methods=['POST'])
 def route_detect_result():
