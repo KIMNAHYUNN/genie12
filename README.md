@@ -52,3 +52,12 @@ static routers = 게이트웨이 주소 (맨 끝자리만 1)
 작동하는 파일: kt_acp_rpi4__v3.4.img (노트북 탑재)
 
 라즈베리 파이 이미저로 라즈베리 파이 측에서 제공하는 이미지 파일을 설치할 경우, easy_install을 사용할 수 없어 audio가 작동하지 않는 문제가 있습니다.
+
+### 4. 초반 설치
+
+```
+sudo apt update
+sudo apt-get install ufw
+sudo ufw allow 22
+sudo ufw allow 5000
+```
