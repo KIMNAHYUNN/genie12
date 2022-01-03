@@ -54,6 +54,7 @@ def route_result():
     file_name = data['image_path']
     file_path = os.path.join("../static/image/", file_name)
     emotion_id = data['emotion_id']
+    print(emotion_id)
     return render_template('result.html', fortune_desc=fortune_desc, file_path=file_path, emotion_id=emotion_id)
 
 @app.route('/review')
