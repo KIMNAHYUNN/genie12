@@ -4,12 +4,7 @@
     <list default="true" id="e8d2b33b-5402-4f33-b619-e137289f3f0f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/css/result.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/result.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/result.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/result.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/card.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/card.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/luck.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/luck.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/result.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/result.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/review.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/review.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/start.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/start.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
