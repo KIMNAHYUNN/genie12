@@ -20,7 +20,7 @@ global text
 text = ""
 
 #def main():
-def mainee():
+def voiceTalk():
 	global text
 	#Example8 KWS+STT+DSS
 	recog=kws.test(KWSID[0])
@@ -28,7 +28,7 @@ def mainee():
 	if recog == 200:
 		print('KWS Dectected ...\n')
 		dss_answer = dss.queryByVoice()
-		text = dss_answer
+		text = dss_answer	# genie answer
 
 		tts_result = tts.getText2VoiceStream(dss_answer, "result_mesg.wav")
 
@@ -52,14 +52,14 @@ def hello_world():
     
 @app.route('/fortuneType')
 def fortuneType():
-	text = mainee()
+	voiceTalk()
 	if text == "오늘의 운세를 봐드릴게요.":
 		return jsonify({'fortuneType': '오늘의 운세'})
 	elif text == "성취운을 봐드릴게요.":
 		return jsonify({'fortuneType': '성취운'})
 	elif text == "금전운을 봐드릴게요.":
 		return jsonify({'fortuneType': '금전운'})
-	else:
+	else:	# get answer - failed
 		return jsonify({'fortuneType': 'oops'})
     
 if __name__ == '__main__':
