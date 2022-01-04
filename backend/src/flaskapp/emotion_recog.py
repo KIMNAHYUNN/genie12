@@ -1,3 +1,11 @@
+#############################################################
+#############################################################
+
+### emotion_recog.py: 딥러닝 모델을 학습 및 검증
+
+#############################################################
+#############################################################
+
 import os
 import json
 import time
@@ -35,12 +43,14 @@ def load_fer_model(exp_path):
     logging.info(f"Loading {config}")
     model_path = exp_path.joinpath("model.pt")
     model = MiniXception(config["num_classes"], config["eps"], config["momentum"])
+    # load_state_dict: models 폴더에 저장된 딥러닝 모델의 weight들을 적용
     model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
     model.eval()
     return model
 
 def inference(model, image):
-    """감정, 감정의 확률, 긍정 감정 여부를 반환
+    """
+    감정, 감정의 확률, 긍정 감정 여부를 반환
 
     웹 캠에서 이미지 하나를 입력 받아 감정을 판별 할 때 사용
     입력은 (48, 48) 크기의 흑백 numpy 텐서.
@@ -61,7 +71,8 @@ def inference(model, image):
     return emotion, prob, is_pos_emotion
 
 def evaluate(dataloader, model, loss_fn):
-    """Validation loss와 모델 정확도 반환
+    """
+    Validation loss와 모델 정확도 반환
     
     Test 셋에서 모델 성능 검증
     """
@@ -78,6 +89,9 @@ def evaluate(dataloader, model, loss_fn):
             pred = model(images)
 
             total_loss += loss_fn(pred, labels).item()
+            # 과적합 여부 판단 - accuracy 계산
+            # 테스트 셋에 있는 각 이미지의 실제 감정을 맞췄다면 1,
+            # 틀렸다면 0을 correct 변수에 더함
             correct += (pred.argmax(1) == labels).type(torch.float).sum().item()
 
     val_loss = total_loss / num_batches # Validation loss
@@ -86,7 +100,7 @@ def evaluate(dataloader, model, loss_fn):
     return val_loss, acc
 
 def train(save_model):
-    """트레이닝 셋에서 학습"""
+    """하이퍼 파라미터"""
     config = {
         "num_classes": NUM_CLASSES,
         "batch_size": 256,
@@ -105,6 +119,7 @@ def train(save_model):
     dataset_path = Path("./FER-2013/")
     train_dataset, test_dataset = load_and_cache_dataset(dataset_path)
     
+    # DataLoader - 학습을 위해 불러온 데이터셋을 batch 단위로 나누기
     train_dataloader = DataLoader(train_dataset, batch_size=config["batch_size"],
                                   shuffle=True)
     test_dataloader = DataLoader(test_dataset, batch_size=config["batch_size"],
@@ -114,7 +129,8 @@ def train(save_model):
     model = MiniXception(config["num_classes"], config["eps"], config["momentum"]) # 딥러닝 모델 생성   
     model.to(device)
     
-    # Cross Entropy 손실 함수와 Adam 옵티마이저 사용
+    # 손실 함수: Cross Entropy 사용
+    # 최적화 함수: Adam 옵티마이저 사용
     loss_fn = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=config["learning_rate"],     
                                  weight_decay=config["weight_decay"])
@@ -130,16 +146,18 @@ def train(save_model):
         model.train()
         total = len(train_dataloader.dataset)
         for batch, (images, labels) in enumerate(train_dataloader):
-            # Compute prediction and loss
             images = images.to(device)
             labels = labels.to(device)
+            
+            # Compute prediction and loss
+            # 실제 정답과 예측 결과 사이의 loss 계산
             pred = model(images)
             loss = loss_fn(pred, labels)
 
-            # Backpropagation
-            optimizer.zero_grad() # Make gradient of the weights zero
-            loss.backward() # Calculate gradient
-            optimizer.step() # Update weights
+            # 역전파(Backpropagation)
+            optimizer.zero_grad() # 기존 Weight들의 gradient 0으로 초기화
+            loss.backward() # Gradient 계산
+            optimizer.step() # Weight 업데이트
 
             if batch % 100 == 0:
                 loss_val = loss.item()
@@ -150,12 +168,14 @@ def train(save_model):
         val_loss, acc = evaluate(test_dataloader, model, loss_fn)
         
         # Early stopping
+        # 이미 overfitting이 발생하고 있을 경우, 시간 절약 위해 학습 중단
         if val_loss > last_val_loss:
             early_stopping_count += 1
         else:
             early_stopping_count = 0
             saved_acc = acc
             saved_params = model.state_dict()
+
             # 모델 저장
             if save_model:
                 if exp_path is not None:
@@ -207,3 +227,5 @@ def test(exp_path):
         
 if __name__ == "__main__":
     train(True)
+    
+# file end

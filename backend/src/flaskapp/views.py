@@ -1,10 +1,18 @@
+#############################################################
+#############################################################
+
+### views.py: Flask 웹 서버 구동과 관련된 함수들
+
+#############################################################
+#############################################################
+
 from flask import request, g, Response, render_template, redirect, url_for
 from flask import Flask, jsonify
 #from flask import flash
 
 from flaskapp import app
 from flaskapp.db_utils import *
-#from flaskapp.vision import *
+#from flaskapp.vision import *  # 구 버전
 from flaskapp.voice import *
 
 import os
@@ -28,23 +36,27 @@ def close_db(e=None):
 #############################################################
 
 @app.route('/')
-def route_main():
+"""Flask의 route 데코레이터로 엔드포인트 등록 ("/")"""
+def route_main(): # 엔드포인트 함수
     return render_template('index.html')
 
 @app.route('/start')
+"""지니의 타로램프 - 시작 페이지"""
 def route_start():
     return render_template('start.html')
 
 @app.route('/luck')
+"""지니의 타로램프 - 운세 의도 페이지"""
 def route_luck():
     #intention_nm = "오늘의 운세"
     #save_intention_nm(intention_nm)
     return render_template('luck.html')
 
 @app.route('/card')
+"""지니의 타로램프 - 카드 뽑기 페이지"""
 def route_card():
-    # 카드 번호를 랜덤으로 생성
-    card_num = randint(0, 22)
+    """카드 번호를 랜덤으로 생성, save_tarot_id 함수를 이용해서 db에 저장"""
+    card_num = randint(0, 22)   # 카드 번호를 랜덤으로 생성
     if card_num < 10:
         tarot_id = "TA0" + str(card_num)
     else:
@@ -59,10 +71,11 @@ def route_card():
     
     # console print
     print(file_path)
-        
+
     return render_template('card.html', file_path=file_path)
 
 @app.route('/result')
+"""지니의 타로램프 - 운세 결과 페이지"""
 def route_result():
     try:
         save_user_info()
@@ -86,6 +99,7 @@ def route_result():
     return render_template('result.html', intention_nm=INTENTION_NM,fortune_desc=fortune_desc, file_path=file_path, emotion_id=emotion_id)
 
 @app.route('/review')
+"""지니의 타로램프 - 리뷰 페이지"""
 def route_review():
     #tarot_result = 4
     #save_tarot_result(tarot_result)
@@ -99,8 +113,9 @@ def route_exit():
 #############################################################
 
 @app.route('/detect_emotion')
+"""사용자의 감정 데이터를 요청 및 저장"""
 def route_detect_emotion():
-    # request emotion data to vision_server
+    # vision_server에 감정의 긍정, 부정 여부 request
     params = {'key': 'value'}
     response = requests.get('http://127.0.0.1:1070/emotion', params=params)
     response_data = response.json()
@@ -120,13 +135,15 @@ def route_detect_emotion():
 #############################################################
 
 @app.route('/detect_intention')
+"""운세 의도 데이터를 요청 및 저장"""
 def route_detect_intention():
-    # request emotion data to raspberry pi server for detecting intention
+    # 기가지니 서버에 운세 의도 request
     params = {'key': 'value'}
     response = requests.get('http://172.30.1.31:5000/fortuneType', params=params)
     response_data = response.json()
     
     intention_nm = str(response_data['fortuneType'])
+    
     # console print
     print("I got it! fortune type: " + intention_nm)
 
@@ -146,6 +163,7 @@ def route_detect_intention():
 #############################################################
 
 @app.route('/detect_result', methods=['POST'])
+"""운세 결과 데이터를 요청 및 저장"""
 def route_detect_result():
     # freview.js에서 ajax로 보내준 별점 정보를 받아옴
     star = request.form['star']
@@ -156,3 +174,5 @@ def route_detect_result():
 
 #############################################################
 #############################################################
+
+# file end
