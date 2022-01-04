@@ -130,7 +130,7 @@ a:visited { color: black; text-decoration: none;}
     left:28%;
     right:28%;
     top:62%;
-    font-size: 3vw;
+    font-size: 4.5vw;
     color: #fff;
     font-family: 'East Sea Dokdo', cursive;
     font-weight: 200;
@@ -139,7 +139,7 @@ a:visited { color: black; text-decoration: none;}
 p.result1{
     display: inline-block;
     height:10px;
-    line-height: 65px;
+    line-height: 85px;
     box-sizing: border-box;
     padding:0; margin:5px;
 }
