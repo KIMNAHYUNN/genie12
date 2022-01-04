@@ -1,3 +1,11 @@
+#############################################################
+#############################################################
+
+### genietarot.py: 음성 인식/대화/음성 합성, 답변 분석
+
+#############################################################
+#############################################################
+
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
@@ -16,19 +24,22 @@ app = Flask(__name__)
 
 KWSID = ['기가지니', '지니야', '친구야', '자기야']
 
-global text
+global text	# save dss_answer
 text = ""
 
 #def main():
 def voiceTalk():
+	"""음성 인식/대화/음성 합성"""
+
 	global text
-	#Example8 KWS+STT+DSS
+
+	# ‘기가지니’ 발화로 서비스를 호출
 	recog=kws.test(KWSID[0])
 
 	if recog == 200:
 		print('KWS Dectected ...\n')
-		dss_answer = dss.queryByVoice()
-		text = dss_answer	# genie answer
+		dss_answer = dss.queryByVoice()	# query by voice
+		text = dss_answer
 
 		tts_result = tts.getText2VoiceStream(dss_answer, "result_mesg.wav")
 
@@ -52,6 +63,10 @@ def hello_world():
     
 @app.route('/fortuneType')
 def fortuneType():
+	"""
+	운세 의도 선택 페이지에서 ‘말하기’ 버튼을 누르면 get 요청 날아옴
+	‘오늘의 운세’, ‘성취운’, ‘금전운’ 중 적절한 운세 의도를 json dictioary 형식으로 return
+	"""
 	voiceTalk()
 	if text == "오늘의 운세를 봐드릴게요.":
 		return jsonify({'fortuneType': '오늘의 운세'})
@@ -66,4 +81,4 @@ if __name__ == '__main__':
    	#app.run(debug=True, host='0.0.0.0', port=5000, threaded=True)
     app.run(host='0.0.0.0', port=5000)
 	
-	
+# file end
