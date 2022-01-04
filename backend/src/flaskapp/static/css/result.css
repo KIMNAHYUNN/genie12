@@ -130,10 +130,11 @@ a:visited { color: black; text-decoration: none;}
     left:28%;
     right:28%;
     top:62%;
-    font-size: 3vw;
+    font-size: 4.5vw;
     color: #fff;
     font-family: 'East Sea Dokdo', cursive;
     font-weight: 200;
+    text-align:center;
 }
 
 p.result1{
@@ -142,6 +143,7 @@ p.result1{
     line-height: 65px;
     box-sizing: border-box;
     padding:0; margin:5px;
+    text-align:center;
 }
 #back{
     position: absolute;

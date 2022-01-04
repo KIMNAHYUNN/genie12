@@ -35,7 +35,7 @@ a:visited { color: black; text-decoration: none;}
     position: absolute;
     left:26.5%;
     right:23.5%;
-    top:33%;
+    top:38%;
     font-size: 5vw;
     color: #000;
     font-family: 'East Sea Dokdo', cursive;
@@ -49,6 +49,7 @@ p.result1{
     line-height: 110px;
     box-sizing: border-box;
     padding:0; margin:5px;
+    text-align:center;
 }
 
 .wrap {
