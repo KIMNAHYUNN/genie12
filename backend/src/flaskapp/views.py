@@ -139,7 +139,7 @@ def route_detect_emotion():
 def route_detect_intention():
     # 기가지니 서버에 운세 의도 request
     params = {'key': 'value'}
-    response = requests.get('http://172.30.1.31:5000/fortuneType', params=params)
+    response = requests.get('http://172.30.1.43:5000/fortuneType', params=params)
     response_data = response.json()
     
     intention_nm = str(response_data['fortuneType'])
