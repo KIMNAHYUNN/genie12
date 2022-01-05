@@ -93,6 +93,9 @@ def gen_frames():
             print("Can't receive frame (stream end?). Exiting ...")
             break
 
+        # 거울처럼 보이기 좌우반전
+        bgr_img = cv.flip(bgr_img, 1)
+
         gray_img = cv.cvtColor(bgr_img, cv.COLOR_BGR2GRAY) # 얼굴 감정 분석용
         rgb_img = cv.cvtColor(bgr_img, cv.COLOR_BGR2RGB) # 출력용
         
@@ -125,8 +128,9 @@ def gen_frames():
             draw_bounding_box(face_coords, rgb_img, color)
             draw_text(face_coords, rgb_img, f"{emotion}", color)
 
-        # 윈도우에 이미지 출력        
+        # 1.6배 확대하여 윈도우에 이미지 출력
         updated_bgr_img = cv.cvtColor(rgb_img, cv.COLOR_RGB2BGR)
+        updated_bgr_img = cv.resize(updated_bgr_img, None, fx=1.6, fy=1.6)        
         cv.imshow('Demo', updated_bgr_img)
 
         if cv.waitKey(1) == ord('o'): 
