@@ -126,22 +126,24 @@ a:visited { color: black; text-decoration: none;}
     font-weight: 200;
 }
 #text-box {
+    font-size: 4vw;
     position: absolute;
     left:28%;
     right:28%;
-    top:62%;
-    font-size: 4.5vw;
+    top:50%;
     color: #fff;
     font-family: 'East Sea Dokdo', cursive;
     font-weight: 200;
+    text-align: center;
 }
 
-p.result1{
+p.result1, p.result2{
     display: inline-block;
     height:10px;
     line-height: 85px;
     box-sizing: border-box;
     padding:0; margin:5px;
+    text-align: center;
 }
 #back{
     position: absolute;
