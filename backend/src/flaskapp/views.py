@@ -35,25 +35,25 @@ def close_db(e=None):
 #############################################################
 #############################################################
 
-@app.route('/')
 """Flask의 route 데코레이터로 엔드포인트 등록 ("/")"""
+@app.route('/')
 def route_main(): # 엔드포인트 함수
     return render_template('index.html')
 
-@app.route('/start')
 """지니의 타로램프 - 시작 페이지"""
+@app.route('/start')
 def route_start():
     return render_template('start.html')
 
-@app.route('/luck')
 """지니의 타로램프 - 운세 의도 페이지"""
+@app.route('/luck')
 def route_luck():
     #intention_nm = "오늘의 운세"
     #save_intention_nm(intention_nm)
     return render_template('luck.html')
 
-@app.route('/card')
 """지니의 타로램프 - 카드 뽑기 페이지"""
+@app.route('/card')
 def route_card():
     """카드 번호를 랜덤으로 생성, save_tarot_id 함수를 이용해서 db에 저장"""
     card_num = randint(0, 22)   # 카드 번호를 랜덤으로 생성
@@ -74,8 +74,8 @@ def route_card():
 
     return render_template('card.html', file_path=file_path)
 
-@app.route('/result')
 """지니의 타로램프 - 운세 결과 페이지"""
+@app.route('/result')
 def route_result():
     try:
         save_user_info()
@@ -98,8 +98,8 @@ def route_result():
 
     return render_template('result.html', intention_nm=INTENTION_NM,fortune_desc=fortune_desc, file_path=file_path, emotion_id=emotion_id)
 
-@app.route('/review')
 """지니의 타로램프 - 리뷰 페이지"""
+@app.route('/review')
 def route_review():
     #tarot_result = 4
     #save_tarot_result(tarot_result)
@@ -112,8 +112,8 @@ def route_exit():
 #############################################################
 #############################################################
 
-@app.route('/detect_emotion')
 """사용자의 감정 데이터를 요청 및 저장"""
+@app.route('/detect_emotion')
 def route_detect_emotion():
     # vision_server에 감정의 긍정, 부정 여부 request
     params = {'key': 'value'}
@@ -134,8 +134,8 @@ def route_detect_emotion():
 #############################################################
 #############################################################
 
-@app.route('/detect_intention')
 """운세 의도 데이터를 요청 및 저장"""
+@app.route('/detect_intention')
 def route_detect_intention():
     # 기가지니 서버에 운세 의도 request
     params = {'key': 'value'}
@@ -162,8 +162,8 @@ def route_detect_intention():
 #############################################################
 #############################################################
 
-@app.route('/detect_result', methods=['POST'])
 """운세 결과 데이터를 요청 및 저장"""
+@app.route('/detect_result', methods=['POST'])
 def route_detect_result():
     # freview.js에서 ajax로 보내준 별점 정보를 받아옴
     star = request.form['star']
