@@ -8,4 +8,3 @@
 
 수정하고 commit 하실 부분은 자유롭게 해주세요. 
 
-https://docs.google.com/document/d/1v771OXQb2jWJlUe0OPT0HSbsAVRLZcTxYWxgkQ7fKBM/edit
