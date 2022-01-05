@@ -48,7 +48,7 @@
 
 //타이핑할 문장
     var result1  = "보고싶은 운세를 선택해주세요.";
-    var result2  = " [ 오늘의 운세 ] "+" [ 성취운 ] "+" [ 금전운 ] ";
+    var result2  = " [ 종합운 ] "+" [ 성공운 ] "+" [ 금전운 ] ";
     var typeing1=[], typeing2=[];;
     result1 = result1.split(''); // 한글자씩자름
     result2 = result2.split(''); // 한글자씩자름
