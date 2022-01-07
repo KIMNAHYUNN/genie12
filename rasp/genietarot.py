@@ -1,7 +1,7 @@
 #############################################################
 #############################################################
 
-### genietarot.py: ìŒì„± ì¸ì‹/ëŒ€í™”/ìŒì„± í•©ì„±, ë‹µë³€ ë¶„ì„
+### genietarot.py: À½¼º ÀÎ½Ä/´ëÈ­/À½¼º ÇÕ¼º, ´äº¯ ºĞ¼®
 
 #############################################################
 #############################################################
@@ -22,18 +22,18 @@ import requests
 
 app = Flask(__name__)
 
-KWSID = ['ê¸°ê°€ì§€ë‹ˆ', 'ì§€ë‹ˆì•¼', 'ì¹œêµ¬ì•¼', 'ìê¸°ì•¼']
+KWSID = ['±â°¡Áö´Ï', 'Áö´Ï¾ß', 'Ä£±¸¾ß', 'ÀÚ±â¾ß']
 
 global text	# save dss_answer
 text = ""
 
 #def main():
 def voiceTalk():
-	"""ìŒì„± ì¸ì‹/ëŒ€í™”/ìŒì„± í•©ì„±"""
+	"""À½¼º ÀÎ½Ä/´ëÈ­/À½¼º ÇÕ¼º"""
 
 	global text
 
-	# â€˜ê¸°ê°€ì§€ë‹ˆâ€™ ë°œí™”ë¡œ ì„œë¹„ìŠ¤ë¥¼ í˜¸ì¶œ
+	# ¡®±â°¡Áö´Ï¡¯ ¹ßÈ­·Î ¼­ºñ½º¸¦ È£Ãâ
 	recog=kws.test(KWSID[0])
 
 	if recog == 200:
@@ -44,9 +44,9 @@ def voiceTalk():
 		tts_result = tts.getText2VoiceStream(dss_answer, "result_mesg.wav")
 
 		if dss_answer == '':
-			print('ì§ˆì˜í•œ ë‚´ìš©ì´ ì—†ìŠµë‹ˆë‹¤.\n\n\n')
+			print('ÁúÀÇÇÑ ³»¿ëÀÌ ¾ø½À´Ï´Ù.\n\n\n')
 		elif tts_result == 500:
-			print("TTS ë™ì‘ ì—ëŸ¬ì…ë‹ˆë‹¤.\n\n\n")
+			print("TTS µ¿ÀÛ ¿¡·¯ÀÔ´Ï´Ù.\n\n\n")
 		else:
 			MS.play_file("result_mesg.wav")			
 		    #time.sleep(2)
@@ -64,18 +64,18 @@ def hello_world():
 @app.route('/fortuneType')
 def fortuneType():
 	"""
-	ìš´ì„¸ ì˜ë„ ì„ íƒ í˜ì´ì§€ì—ì„œ â€˜ë§í•˜ê¸°â€™ ë²„íŠ¼ì„ ëˆ„ë¥´ë©´ get ìš”ì²­ ë‚ ì•„ì˜´
-	â€˜ì˜¤ëŠ˜ì˜ ìš´ì„¸â€™, â€˜ì„±ì·¨ìš´â€™, â€˜ê¸ˆì „ìš´â€™ ì¤‘ ì ì ˆí•œ ìš´ì„¸ ì˜ë„ë¥¼ json dictioary í˜•ì‹ìœ¼ë¡œ return
+	¿î¼¼ ÀÇµµ ¼±ÅÃ ÆäÀÌÁö¿¡¼­ ¡®¸»ÇÏ±â¡¯ ¹öÆ°À» ´©¸£¸é get ¿äÃ» ³¯¾Æ¿È
+	¡®¿À´ÃÀÇ ¿î¼¼¡¯, ¡®¼ºÃë¿î¡¯, ¡®±İÀü¿î¡¯ Áß ÀûÀıÇÑ ¿î¼¼ ÀÇµµ¸¦ json dictioary Çü½ÄÀ¸·Î return
 	"""
 	voiceTalk()
-	if text == "ì˜¤ëŠ˜ì˜ ìš´ì„¸ë¥¼ ë´ë“œë¦´ê²Œìš”.":
-		return jsonify({'fortuneType': 'ì˜¤ëŠ˜ì˜ ìš´ì„¸'})
-	elif text == "ì„±ì·¨ìš´ì„ ë´ë“œë¦´ê²Œìš”.":
-		return jsonify({'fortuneType': 'ì„±ì·¨ìš´'})
-	elif text == "ê¸ˆì „ìš´ì„ ë´ë“œë¦´ê²Œìš”.":
-		return jsonify({'fortuneType': 'ê¸ˆì „ìš´'})
-	else:	# get answer - failed
-		return jsonify({'fortuneType': 'oops'})
+	if text == "¿À´ÃÀÇ ¿î¼¼¸¦ ºÁµå¸±°Ô¿ä.":
+		return jsonify({'fortuneType': '¿À´ÃÀÇ ¿î¼¼'})
+	elif text == "¼ºÃë¿îÀ» ºÁµå¸±°Ô¿ä.":
+		return jsonify({'fortuneType': '¼ºÃë¿î'})
+	elif text == "±İÀü¿îÀ» ºÁµå¸±°Ô¿ä.":
+		return jsonify({'fortuneType': '±İÀü¿î'})
+	else:	
+		return fortuneType()
     
 if __name__ == '__main__':
    	#app.run(debug=True, host='0.0.0.0', port=5000, threaded=True)
