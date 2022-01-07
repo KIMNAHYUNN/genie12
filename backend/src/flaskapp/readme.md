@@ -3,17 +3,17 @@
 
 * PowerShell 창이 열리면 다음과 같이 입력
 ```
-face_emotion_recog> cmd
-face_emotion_recog> python -m venv venv
-face_emotion_recog> venv\Scripts\activate
-(venv) face_emotion_recog> pip install -r requirements.txt
-(venv) face_emotion_recog> python vision_server.py
+flaskapp> cmd
+flaskapp> python -m venv venv
+flaskapp> venv\Scripts\activate
+(venv) flaskapp> pip install -r requirements.txt
+(venv) flaskapp> python vision_server.py
 ```
 * 브라우저를 열고 http://localhost:1070/ 접속하고 기다리면 웹 캠 창이 나타납니다
 * 안경을 벗으면 얼굴 인식이 더 잘됩니다
 * 가상 환경 나가려면 deactivate 입력
 ```
-(venv) face_emotion_recog> deactivate
+(venv) flaskapp> deactivate
 ```
 
 # 학습
